@@ -1870,10 +1870,13 @@ function list_apply_defaults(l, defaults) =
 ///   **NOTE:** thread-len and pitch values pulled from online
 ///   have not every size for sched-40 & sched-80; a best-effort
 ///   fill-in-the-gaps is done here.
+///   .
+///   Data throughout this table was assembled from various places
+///   and dropped into this public Google sheet: https://docs.google.com/spreadsheets/d/16uJ9TI1HDpMDmowM9_0UBDWN-NWQXJ5RcD7DOoRFrvU/edit#gid=0 
+///   Sources - as much as they're known - are listed there. 
 ///
 /// Todo:
 ///   Get the final two columns of data for Schedule 120: thread-length & pitch
-///   List the sources used
 ///
 _PVC_specs_raw = [
     // 40
