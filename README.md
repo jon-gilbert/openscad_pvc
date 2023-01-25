@@ -32,6 +32,12 @@ A full overview on selecting PVC specifications by schedule, and on joining indi
 
 # Installation
 
+Installing this library should be as simple as downloading the .scad file and copying it to your OpenSCAD library directory:
+```
+wget -N -q -O openscad_pvc.scad https://raw.githubusercontent.com/jon-gilbert/openscad_pvc/main/openscad_pvc.scad
+```
+The path directory will vary based on your OS; see https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Libraries#Library_locations for the correct location for you.
+
 ## Required OpenSCAD Version
 Building and using the `openscad_pvc` library requires OpenSCAD 2021.01 or later. Visit https://openscad.org/ for installation instructions.
 
