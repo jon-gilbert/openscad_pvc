@@ -1,0 +1,13 @@
+DocsDirectory: docs/
+TargetProfile: githubwiki
+ProjectName: openscad_pvc
+IgnoreFiles:
+  tmp_*.scad
+DefineHeader(BulletList): Todo
+DefineHeader(BulletList): Listing
+DefineHeader(BulletList): Links
+DefineHeader(Table;Headers=^Position|^Positional List Item|What It Represents): DefArgs
+DefineHeader(Table;Headers=^Position|^Name|What It Represents): Return Listing
+DefineHeader(Table;Headers=^Attribute Name|^Datatype|What It Represents): Attributes
+DefineHeader(Table;Headers=^Function|What It Returns): Attribute Function Listing
+DefineHeader(Table;Headers=^Anchor Name|Position Description): Named Anchors
