@@ -1039,24 +1039,24 @@ module pvc_cap(pvc, ends=[],
 module pvc_plug(pvc, ends=[],
         anchor=PVC_DEFAULT_ANCHOR, spin=PVC_DEFAULT_SPIN, orient=PVC_DEFAULT_ORIENT) {
 
-    ends_ = list_apply_defaults(ends, ["spigot"]);
-    assert(in_list(ends_[0], ["mipt", "spigot"]), 
+    ends_ = list_apply_defaults(ends, ["ispigot"]);
+    assert(in_list(ends_[0], ["mipt", "spigot", "ispigot"]), 
         "pvc_plug(): Only 'mipt' and 'spigot' are allowable end types for PVC caps");
 
     tl = pvc_tl(pvc);
     wall = pvc_wall(pvc);
-    plug_len = sum([ tl, 1 ]);
-    total_pipe_len = sum([plug_len, wall]);
+    total_pipe_len = sum([tl, wall]);
 
     anchors = [
-        named_anchor("A", apply(down(tl/2) * up(plug_len/2), CENTER), UP, 0)
+        named_anchor("A", apply(down(tl/2) * up(total_pipe_len/2), CENTER), UP, 0)
     ];
     attachable(anchor, spin, orient, d=pvc_socket_od(pvc), h=total_pipe_len, anchors=anchors) {
-        up(wall/2)
-        diff("pvc_rem__full")
-            pvc_part_component(pvc, length=1, end=ends_[0], anchor=CENTER)   // A
-                attach(BOTTOM, TOP)
-                    cylinder(d=pvc_socket_od(pvc), h=wall);  // TODO: this kind of sucks with mipt; reeval the endpoint?
+        down(total_pipe_len/2)
+            cylinder(d=pvc_socket_od(pvc), h=wall, anchor=BOTTOM)
+                attach(TOP, BOTTOM)
+                    pvc_part_component(pvc, length=0, end=ends_[0])   // A
+                        attach(TOP, BOTTOM, overlap=wall)
+                            cylinder(d=pvc_id(pvc), h=wall);
         children();
     }
 }
@@ -1445,6 +1445,7 @@ module pvc_union(pvc,
 //   no matter how much fun it'd be.)*
 PVC_ENDTYPES = [
     "spigot",   // smooth inner join; should be the same as the od
+    "ispigot",  // smooth inner join; its od should be the same as the PVC object's id
     "socket",   // smooth outer join; larger than the OD
     "mipt",     // male-iron-pipe-thread; threading on the outside of the pipe
     "fipt"      // female-iron-pipe-thread; threading on the inside of the pipe
@@ -1686,6 +1687,9 @@ module pvc_endpoint(pvc, type="spigot", length=undef,
         attachable(anchor, spin, orient, d=attachable_od, l=l) {
             if (type == "spigot") {
                 tube(od=od, wall=wall, l=l, anchor=CENTER);
+
+            } else if (type == "ispigot") {
+                tube(od=id, wall=wall, l=l, anchor=CENTER);
 
             } else if (type == "mipt") {
                 difference() {
