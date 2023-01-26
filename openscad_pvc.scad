@@ -1004,7 +1004,7 @@ module pvc_cap(pvc, ends=[],
 // Arguments:
 //   pvc = An instantiated PVC specification
 //   ---
-//   ends = A list of the single end type, `A`. Default: `["spigot"]`
+//   ends = A list of the single end type, `A`. Default: `["ispigot"]`
 //   anchor = Translate so anchor point is at origin `[0,0,0]`. Default: `PVC_DEFAULT_ANCHOR`
 //   spin = Rotate this many degrees around the Z axis after anchoring. Default: `PVC_DEFAULT_SPIN`
 //   orient = Vector direction to which the model should point after spin. Default: `PVC_DEFAULT_ORIENT`
@@ -1043,20 +1043,28 @@ module pvc_plug(pvc, ends=[],
     assert(in_list(ends_[0], ["mipt", "spigot", "ispigot"]), 
         "pvc_plug(): Only 'mipt' and 'spigot' are allowable end types for PVC caps");
 
+    id = pvc_id(pvc);
+    socket_od = pvc_socket_od(pvc);
     tl = pvc_tl(pvc);
     wall = pvc_wall(pvc);
     total_pipe_len = sum([tl, wall]);
+    slot = [ id, wall/2, wall/2 ];
 
     anchors = [
         named_anchor("A", apply(down(tl/2) * up(total_pipe_len/2), CENTER), UP, 0)
     ];
-    attachable(anchor, spin, orient, d=pvc_socket_od(pvc), h=total_pipe_len, anchors=anchors) {
+    attachable(anchor, spin, orient, d=socket_od, h=total_pipe_len, anchors=anchors) {
         down(total_pipe_len/2)
-            cylinder(d=pvc_socket_od(pvc), h=wall, anchor=BOTTOM)
-                attach(TOP, BOTTOM)
-                    pvc_part_component(pvc, length=0, end=ends_[0])   // A
-                        attach(TOP, BOTTOM, overlap=wall)
-                            cylinder(d=pvc_id(pvc), h=wall);
+            diff("_rem__plug")
+                cylinder(d=socket_od, h=wall, anchor=BOTTOM) {
+                    attach(TOP, BOTTOM)
+                        pvc_part_component(pvc, length=0, end=ends_[0])   // A
+                            attach(TOP, BOTTOM, overlap=wall)
+                                cylinder(d=id, h=wall);
+                    attach(BOTTOM, TOP, overlap=wall/2 - 0.1)
+                        tag("_rem__plug")
+                            cuboid(slot);
+                }
         children();
     }
 }
