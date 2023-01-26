@@ -1004,7 +1004,7 @@ module pvc_cap(pvc, ends=[],
 // Arguments:
 //   pvc = An instantiated PVC specification
 //   ---
-//   ends = A list of the single end type, `A`. Default: `["spigot"]`
+//   ends = A list of the single end type, `A`. Default: `["ispigot"]`
 //   anchor = Translate so anchor point is at origin `[0,0,0]`. Default: `PVC_DEFAULT_ANCHOR`
 //   spin = Rotate this many degrees around the Z axis after anchoring. Default: `PVC_DEFAULT_SPIN`
 //   orient = Vector direction to which the model should point after spin. Default: `PVC_DEFAULT_ORIENT`
@@ -1039,24 +1039,32 @@ module pvc_cap(pvc, ends=[],
 module pvc_plug(pvc, ends=[],
         anchor=PVC_DEFAULT_ANCHOR, spin=PVC_DEFAULT_SPIN, orient=PVC_DEFAULT_ORIENT) {
 
-    ends_ = list_apply_defaults(ends, ["spigot"]);
-    assert(in_list(ends_[0], ["mipt", "spigot"]), 
+    ends_ = list_apply_defaults(ends, ["ispigot"]);
+    assert(in_list(ends_[0], ["mipt", "spigot", "ispigot"]), 
         "pvc_plug(): Only 'mipt' and 'spigot' are allowable end types for PVC caps");
 
+    id = pvc_id(pvc);
+    socket_od = pvc_socket_od(pvc);
     tl = pvc_tl(pvc);
     wall = pvc_wall(pvc);
-    plug_len = sum([ tl, 1 ]);
-    total_pipe_len = sum([plug_len, wall]);
+    total_pipe_len = sum([tl, wall]);
+    slot = [ id, wall/2, wall/2 ];
 
     anchors = [
-        named_anchor("A", apply(down(tl/2) * up(plug_len/2), CENTER), UP, 0)
+        named_anchor("A", apply(down(tl/2) * up(total_pipe_len/2), CENTER), UP, 0)
     ];
-    attachable(anchor, spin, orient, d=pvc_socket_od(pvc), h=total_pipe_len, anchors=anchors) {
-        up(wall/2)
-        diff("pvc_rem__full")
-            pvc_part_component(pvc, length=1, end=ends_[0], anchor=CENTER)   // A
-                attach(BOTTOM, TOP)
-                    cylinder(d=pvc_socket_od(pvc), h=wall);  // TODO: this kind of sucks with mipt; reeval the endpoint?
+    attachable(anchor, spin, orient, d=socket_od, h=total_pipe_len, anchors=anchors) {
+        down(total_pipe_len/2)
+            diff("_rem__plug")
+                cylinder(d=socket_od, h=wall, anchor=BOTTOM) {
+                    attach(TOP, BOTTOM)
+                        pvc_part_component(pvc, length=0, end=ends_[0])   // A
+                            attach(TOP, BOTTOM, overlap=wall)
+                                cylinder(d=id, h=wall);
+                    attach(BOTTOM, TOP, overlap=wall/2 - 0.1)
+                        tag("_rem__plug")
+                            cuboid(slot);
+                }
         children();
     }
 }
@@ -1445,6 +1453,7 @@ module pvc_union(pvc,
 //   no matter how much fun it'd be.)*
 PVC_ENDTYPES = [
     "spigot",   // smooth inner join; should be the same as the od
+    "ispigot",  // smooth inner join; its od should be the same as the PVC object's id
     "socket",   // smooth outer join; larger than the OD
     "mipt",     // male-iron-pipe-thread; threading on the outside of the pipe
     "fipt"      // female-iron-pipe-thread; threading on the inside of the pipe
@@ -1687,6 +1696,9 @@ module pvc_endpoint(pvc, type="spigot", length=undef,
             if (type == "spigot") {
                 tube(od=od, wall=wall, l=l, anchor=CENTER);
 
+            } else if (type == "ispigot") {
+                tube(od=id, wall=wall, l=l, anchor=CENTER);
+
             } else if (type == "mipt") {
                 difference() {
                     threaded_rod(d=id + wall, l=l,
@@ -1870,10 +1882,13 @@ function list_apply_defaults(l, defaults) =
 ///   **NOTE:** thread-len and pitch values pulled from online
 ///   have not every size for sched-40 & sched-80; a best-effort
 ///   fill-in-the-gaps is done here.
+///   .
+///   Data throughout this table was assembled from various places
+///   and dropped into this public Google sheet: https://docs.google.com/spreadsheets/d/16uJ9TI1HDpMDmowM9_0UBDWN-NWQXJ5RcD7DOoRFrvU/edit#gid=0 
+///   Sources - as much as they're known - are listed there. 
 ///
 /// Todo:
 ///   Get the final two columns of data for Schedule 120: thread-length & pitch
-///   List the sources used
 ///
 _PVC_specs_raw = [
     // 40
