@@ -37,4 +37,4 @@ jobs:
         sudo chmod +x /usr/local/bin/openscad
 
     - name: Unit Tests
-      run: make test
+      run: make tests
