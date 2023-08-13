@@ -1581,7 +1581,7 @@ module pvc_part_component(pvc, end="socket", length=undef, socket_overlap=3,
     tag("pvc_rem__full")
         attachable(anchor, spin, orient, d=max_od, l=total_len, anchors=anchors) {
             down(total_len/2)
-                cylinder(d=id, l=pipe_len, anchor=BOTTOM)
+                cylinder(d=id, h=pipe_len, anchor=BOTTOM)
                     attach(TOP, BOTTOM, overlap=0.001)
                         pvc_endpoint_negative(pvc, end);
             union() {}
@@ -1637,16 +1637,16 @@ module pvc_endpoint_negative(pvc, type="spigot", length=undef) {
 
         attachable(CENTER, 0, UP, d=a_diam, l=l) {
             if (type == "spigot") {
-                cylinder(d=id, l=l, anchor=CENTER);
+                cylinder(d=id, h=l, anchor=CENTER);
             } else if (type == "mipt") {
-                cylinder(d=id, l=l, anchor=CENTER);
+                cylinder(d=id, h=l, anchor=CENTER);
             } else if (type == "socket") {
-                cylinder(d=id, l=l, anchor=CENTER);
+                cylinder(d=id, h=l, anchor=CENTER);
             } else if (type == "fipt") {
                 // check this, we don't want to run into the threads, but we don't want to 
                 // re-thread the whole thing just yet
                 // Todo - this inline calc for `d` is ridiculous.
-                cylinder(d=pvc_od(pvc) - (pvc_od(pvc) - pvc_id(pvc)) / 2 - 1, l=l, anchor=CENTER);
+                cylinder(d=pvc_od(pvc) - (pvc_od(pvc) - pvc_id(pvc)) / 2 - 1, h=l, anchor=CENTER);
             }
             children();
         }
@@ -1709,7 +1709,7 @@ module pvc_endpoint(pvc, type="spigot", length=undef,
                         bevel=true, 
                         internal=false, 
                         anchor=CENTER);
-                    cylinder(d=id, l=l + 0.001, anchor=CENTER);
+                    cylinder(d=id, h=l + 0.001, anchor=CENTER);
                 }
 
             } else if (type == "socket") {
