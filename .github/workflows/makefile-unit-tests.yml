@@ -1,0 +1,40 @@
+name: Unit tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Clone BOSL2
+      uses: actions/checkout@v3
+      with:
+          repository: BelfrySCAD/BOSL2
+          path: ${{ github.workspace }}/BOSL2
+
+    - name: Download openscad_objects
+      run: wget -N -q -O ${{ github.workspace }}/object_common_functions.scad https://raw.githubusercontent.com/jon-gilbert/openscad_objects/main/object_common_functions.scad
+
+    - name: APT update
+      run: sudo apt update
+
+    - name: Install Required Libraries
+      run: sudo apt-get install libfuse2
+
+    - name: Install OpenSCAD
+      run: |
+        cd $GITHUB_WORKSPACE
+        wget https://files.openscad.org/OpenSCAD-2021.01-x86_64.AppImage
+        sudo mv OpenSCAD-2021.01*-x86_64.AppImage /usr/local/bin/openscad
+        sudo chmod +x /usr/local/bin/openscad
+
+    - name: Unit Tests
+      run: make test
