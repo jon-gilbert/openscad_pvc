@@ -1,7 +1,9 @@
-DocsDirectory: docs/
+DocsDirectory: openscad_pvc.wiki/
 TargetProfile: githubwiki
 ProjectName: openscad_pvc
+GenerateDocs: Files, TOC, Index
 IgnoreFiles:
+  object_common_functions.scad
   tmp_*.scad
 DefineHeader(BulletList): Todo
 DefineHeader(BulletList): Listing
