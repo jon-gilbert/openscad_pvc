@@ -4,7 +4,7 @@ docsdir = docs
 test_names = $(sort $(wildcard $(testdir)/test_*.scad))
 srcs = openscad_pvc.scad
 
-all: externals test
+all: test
 
 doc:
 	openscad-docsgen --force --gen-files --project-name "openscad_pvc" --docs-dir $(docsdir) $(srcs)
