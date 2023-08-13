@@ -27,7 +27,7 @@ jobs:
             path: ${{ github.workspace }}/BOSL2
 
       - name: Download openscad_objects
-         run: wget -N -q -O ${{ github.workspace }}/object_common_functions.scad https://raw.githubusercontent.com/jon-gilbert/openscad_objects/main/object_common_functions.scad
+        run: wget -N -q -O ${{ github.workspace }}/object_common_functions.scad https://raw.githubusercontent.com/jon-gilbert/openscad_objects/main/object_common_functions.scad
 
       - name: APT update
         run: sudo apt update
