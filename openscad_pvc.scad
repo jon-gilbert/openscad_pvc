@@ -20,7 +20,7 @@ include <object_common_functions.scad>
 
 
 // Section: PVC Specification Selection
-//   To get consistent dimensions for parts and components when modeling PVC, you have to 
+//   To have consistent dimensions for parts and components when modeling PVC, you have to 
 //   know the diameter and threading information for the size of PVC you're working with. 
 //   Those dimensions are driven not only by the diameter of the pipe you're using, but 
 //   the schedule rating for that pipe. There's dozens of sizes across the PVC schedules, 
@@ -220,6 +220,9 @@ function pvc_spec_lookup(schedule, name=undef, dn=undef, od=undef, wall=undef, t
 //
 // Example: a basic pipe
 //   pvc_pipe(pvc_a, 30);
+//
+// Example: a basic pipe, forward-oriented:
+//   pvc_pipe(pvc_a, 30, orient=FWD);
 //
 // Todo:
 //   When the merge at https://github.com/openscad/openscad/pull/4185 is released to general-availability, reenable the animated spin of the model in Figure-1 here, and throughout the other part modules in this library.

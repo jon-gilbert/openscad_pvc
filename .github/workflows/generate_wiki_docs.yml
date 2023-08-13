@@ -1,0 +1,64 @@
+name: Generate Wiki Docs
+
+on:
+  workflow_run:
+    workflows: [Unit tests]
+    types: [completed]
+
+  workflow_dispatch:
+
+jobs:
+  RegenDocs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: CloneWiki
+        uses: actions/checkout@v3
+        with:
+          repository: jon-gilbert/openscad_pvc.wiki
+          path: openscad_pvc.wiki
+
+      - name: Clone BOSL2
+        uses: actions/checkout@v3
+        with:
+            repository: BelfrySCAD/BOSL2
+            path: ${{ github.workspace }}/BOSL2
+
+      - name: Download openscad_objects
+         run: wget -N -q -O ${{ github.workspace }}/object_common_functions.scad https://raw.githubusercontent.com/jon-gilbert/openscad_objects/main/object_common_functions.scad
+
+      - name: APT update
+        run: sudo apt update
+
+      - name: Install Required Libraries
+        run: sudo apt-get install python3-pip python3-dev python3-setuptools python3-pil gifsicle libfuse2
+
+      - name: Install openscad-docsgen
+        run: sudo pip3 install openscad-docsgen
+
+      - name: Install OpenSCAD
+        run: |
+          cd $GITHUB_WORKSPACE
+          wget https://files.openscad.org/OpenSCAD-2021.01-x86_64.AppImage
+          sudo mv OpenSCAD-2021.01*-x86_64.AppImage /usr/local/bin/openscad
+          sudo chmod +x /usr/local/bin/openscad
+
+      - name: Generate Wiki docs
+        uses: GabrielBB/xvfb-action@v1.6
+        env:
+          OPENSCADPATH: ${{ github.workspace }}/..
+        with:
+          run: openscad-docsgen -f
+
+      - name: manual git upload to wiki
+        run: |
+          cd openscad_pvc.wiki
+          git config user.name `git log -1 --pretty=format:"%an" "HEAD"`
+          git config user.email `git log -1 --pretty=format:"%ae" "HEAD"`
+          git add -A 
+          git commit -m "Wiki doc update"
+          git push
+
+
