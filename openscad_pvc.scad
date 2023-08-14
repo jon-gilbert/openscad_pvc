@@ -45,6 +45,7 @@ include <object_common_functions.scad>
 //   ```
 // 
 // Function: pvc_spec_lookup()
+// Synopsis: Look up a PVC schedule specification
 // Usage:
 //   pvc = pvc_spec_lookup(schedule, <name=undef>, <dn=undef>, <od=undef>, <wall=undef>);
 //
@@ -182,6 +183,7 @@ function pvc_spec_lookup(schedule, name=undef, dn=undef, od=undef, wall=undef, t
 //
 
 // Module: pvc_pipe()
+// Synopsis: Create a PVC pipe model
 // Usage:
 //   pvc_pipe(pvc, length);
 //   pvc_pipe(pvc, length, <ends=["spigot", "spigot"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -269,6 +271,7 @@ module pvc_pipe(pvc, length, ends=[],
 
 
 // Module: pvc_elbow()
+// Synopsis: Create a PVC elbow model
 // Usage:
 //   pvc_elbow(pvc, angle);
 //   pvc_elbow(pvc, angle, <ends=["socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -373,6 +376,7 @@ module pvc_elbow(pvc, angle, ends=[],
 
 
 // Module: pvc_wye()
+// Synopsis: Create a PVC wye model
 // Usage:
 //   pvc_wye(pvc);
 //   pvc_wye(pvc, <ends=["socket", "socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -451,6 +455,7 @@ module pvc_wye(pvc, ends=[],
 
 
 // Module: pvc_tee()
+// Synopsis: Create a PVC tee model
 // Usage:
 //   pvc_tee(pvc);
 //   pvc_tee(pvc, <ends=["socket", "socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -523,6 +528,7 @@ module pvc_tee(pvc, ends=[],
 
 
 // Module: pvc_corner()
+// Synopsis: Create a PVC corner model
 // Usage:
 //   pvc_corner(pvc);
 //   pvc_corner(pvc, <ends=["socket", "socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -604,6 +610,7 @@ module pvc_corner(pvc, ends=[],
 
 
 // Module: pvc_side_outlet_tee()
+// Synopsis: Create a PVC side-outlet tee model
 // Usage:
 //   pvc_side_outlet_tee(pvc);
 //   pvc_side_outlet_tee(pvc, <ends=["socket", "socket", "socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -682,6 +689,7 @@ module pvc_side_outlet_tee(pvc, ends=[],
 
 
 // Module: pvc_cross()
+// Synopsis: Create a PVC cross model
 // Usage:
 //   pvc_cross(pvc);
 //   pvc_cross(pvc, <ends=["socket", "socket", "socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -759,6 +767,7 @@ module pvc_cross(pvc, ends=[],
 
 
 // Module: pvc_six_way_joint()
+// Synopsis: Create a PVC six-way joint model
 // Usage:
 //   pvc_six_way_joint(pvc);
 //   pvc_six_way_joint(pvc, <ends=["socket", ...]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -842,6 +851,7 @@ module pvc_six_way_joint(pvc, ends=[],
 
 
 // Module: pvc_coupling()
+// Synopsis: Create a PVC coupling model
 // Usage:
 //   pvc_coupling(pvc);
 //   pvc_coupling(pvc, <ends=["socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -911,6 +921,7 @@ module pvc_coupling(pvc, ends=[],
 
 
 // Module: pvc_cap()
+// Synopsis: Create a PVC cap model
 // Usage:
 //   pvc_cap(pvc);
 //   pvc_cap(pvc, <ends=["socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -989,6 +1000,7 @@ module pvc_cap(pvc, ends=[],
 
 
 // Module: pvc_plug()
+// Synopsis: Create a PVC plug model
 // Usage:
 //   pvc_plug(pvc);
 //   pvc_plug(pvc, <ends=["spigot"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1075,6 +1087,7 @@ module pvc_plug(pvc, ends=[],
 
 
 // Module: pvc_adapter()
+// Synopsis: Create a PVC adapter model
 // Usage:
 //   pvc_adapter(pvc1, pvc2);
 //   pvc_adapter(pvc1, pvc2, <ends=["socket", "socket"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1145,6 +1158,7 @@ module pvc_adapter(pvc1, pvc2, ends=[],
 
 
 // Module: pvc_bushing()
+// Synopsis: Create a PVC bushing model
 // Usage:
 //   pvc_bushing(pvc1, pvc2);
 //   pvc_bushing(pvc1, pvc2, <ends=["fipt", "mipt"]>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1251,6 +1265,7 @@ module pvc_bushing(pvc1, pvc2, ends=[],
 
 
 // Module: pvc_nipple()
+// Synopsis: Create a PVC nipple model
 // Usage:
 //   pvc_nipple(pvc);
 //   pvc_nipple(pvc, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1308,6 +1323,7 @@ module pvc_nipple(pvc,
 
 
 // Module: pvc_flange()
+// Synopsis: Create a PVC flange model
 // Usage:
 //   pvc_flange(pvc);
 //   pvc_flange(pvc, <ends=[undef, "socket"]>, <mounts=4>, <mount_diam=0>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1481,6 +1497,7 @@ PVC_DEFAULT_ORIENT = UP;
 ///
 
 /// Module: pvc_part_component()
+/// Synopsis: Internal module for creating base component models
 /// Usage:
 ///   pvc_part_component(pvc);
 ///   pvc_part_component(pvc, <end="socket">, <length=undef>, <socket_overlap=3>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1598,6 +1615,7 @@ module pvc_part_component(pvc, end="socket", length=undef, socket_overlap=3,
 
 
 /// Module: pvc_endpoint_negative()
+/// Synopsis: Internal module to create negative, diffable space for endpoints
 /// Usage:
 ///   pvc_endpoint_negative(pvc);
 ///   pvc_endpoint_negative(pvc, <type="spigot">, <length=undef>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1656,6 +1674,7 @@ module pvc_endpoint_negative(pvc, type="spigot", length=undef) {
 
 
 /// Module: pvc_endpoint()
+/// Synopsis: Internal module for creating consistent endpoints for PVC models
 /// Usage:
 ///   pvc_endpoint(pvc);
 ///   pvc_endpoint(pvc, <type="spigot">, <length=undef>, <anchor=CENTER>, <spin=0>, <orient=UP>);
@@ -1738,6 +1757,7 @@ module pvc_endpoint(pvc, type="spigot", length=undef,
 /// Subsection: Object Creation
 ///
 /// Function: PVC()
+/// Synopsis: Create an PVC Object
 /// Description:
 ///   Creates a new `pvc` object given a variable list of `[attribute, value]` lists. 
 ///   Attribute pairs can be in any order. Unspecified attributes will be set to `undef`. 
@@ -1787,6 +1807,7 @@ PVC_attributes = [ "schedule=i", "name=s", "od=i", "wall=i", "dn=s",
 ///   pvc_pitch() 
 ///
 /// Function: pvc_schedule()
+/// Synopsis: Object accessor for the `schedule` attribute
 /// Description: 
 ///   Mutatable object accessor specific to the `schedule` attribute. 
 /// Usage:
@@ -1811,12 +1832,14 @@ function pvc_pitch(pvc, default=undef, nv=undef)        = obj_accessor(pvc, "pit
 ///   They're not values pulled directly from the PVC object. 
 ///
 /// Function: pvc_id()
+/// Synopsis: Return the derived inner-diameter of a PVC component
 /// Usage:
 ///   id = pvc_id(pvc);
 /// Description:
 ///   Given a PVC object `pvc`, return the calculated inner diameter `id`. 
 function pvc_id(pvc) = pvc_od(pvc) - (pvc_wall(pvc) * 2);
 /// Function: pvc_socket_od()
+/// Synopsis: Return the derived outer-diameter of a PVC component
 /// Usage:
 ///   diam = pvc_socket_od(pvc);
 /// Description:
@@ -1825,6 +1848,7 @@ function pvc_id(pvc) = pvc_od(pvc) - (pvc_wall(pvc) * 2);
 ///   that needs a socket to fit the PVC spec. 
 function pvc_socket_od(pvc) = pvc_socket_id(pvc) + (pvc_wall(pvc) * 2);
 /// Function: pvc_socket_id()
+/// Synopsis: Return the inner-diameter of a PVC component's socket
 /// Usage:
 ///   diam = pvc_socket_id(pvc);
 /// Description:
@@ -1870,6 +1894,7 @@ function list_apply_defaults(l, defaults) =
 
 
 /// Constant: _PVC_specs_raw
+/// Synopsis: Internal constant that lists known PVC schedules and sizes
 /// Description:
 ///   This is the raw detail data of PVC specifications. Each element within `_PVC_specs_raw` 
 ///   is a seven-element list that describes the size and dimensions of PVC parts. 
@@ -1964,6 +1989,7 @@ _PVC_specs_raw = [
 ];
 
 /// Constant: PVC_Specs
+/// Synopsis: Internal constant for PVC specifications
 /// Description: 
 ///   A list of all know PVC specifications as instantiated PVC objects.
 ///   .
