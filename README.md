@@ -26,4 +26,3 @@ wget -N -q -O openscad_pvc.scad https://raw.githubusercontent.com/jon-gilbert/op
 ```
 Additional information on external libraries needed can be found at [the Installation wiki](https://github.com/jon-gilbert/openscad_pvc/wiki/Installation).
 
-
